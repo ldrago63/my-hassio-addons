@@ -1,0 +1,59 @@
+{
+  "name": "Hassio wifi hotspot",
+  "version": "0.0.1",
+  "slug": "hassio-wifi-hotspot",
+  "description": "Connect directly your wifi sensors / cams / lights / outlets to hassio for a perfect devices isolation",
+  "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
+  "url": "https://github.com/ldrago63/my-hassio-addons",
+  "startup": "system",
+  "boot": "auto",
+  "host_network": true,
+  "apparmor": false,
+  "host_dbus": true,
+  "full_access": true,
+  "privileged": [
+    "NET_ADMIN",
+    "SYS_ADMIN",
+    "SYS_RAWIO",
+    "SYS_TIME",
+    "SYS_NICE"
+  ],
+  "devices": [
+    "/dev/mem:/dev/mem:rwm"
+  ],
+  "map": [
+    "config:rw",
+    "ssl:rw",
+    "addons:rw",
+    "share:rw",
+    "backup:rw"
+  ],
+  "options": {
+    "ssid": "",
+    "wpa_passphrase": "",
+    "channel": "6",
+    "network": "192.168.99.0",
+    "address": "192.168.99.1",
+    "netmask": "255.255.255.0",
+    "broadcast": "192.168.99.255",
+    "fixed_ips": [{
+      "name": "outlet1",
+      "mac_address": "00:00:00:00:00",
+      "ip": "192.168.99.10"
+    }]
+  },
+  "schema": {
+    "ssid": "str",
+    "wpa_passphrase": "str",
+    "channel": "int",
+    "network": "str",
+    "address": "str",
+    "netmask": "str",
+    "broadcast": "str",
+    "fixed_ips": [{
+      "name": "str",
+      "mac_address": "str",
+      "ip": "str"
+    }]
+  }
+} 
