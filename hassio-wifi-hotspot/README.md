@@ -25,23 +25,19 @@ https://github.com/ldrago63/my-hassio-addons
 The available configuration options are as follows (this is filled in with some example data):
 
 ```
-{
-    "ssid": "MY_HASSI_WIFI",
-    "wpa_passphrase": "SECURED_WPA_PASS",
-    "channel": "6",
-    "network": "192.168.99.0",
-    "address": "192.168.99.1",
-    "netmask": "255.255.255.0",
-    "broadcast": "192.168.99.255",
-    "fixed_ips": [{
-      "name": "outlet1",
-      "mac_address": "00:00:00:00:00",
-      "ip": "192.168.99.10"
-    },
-    {
-      "name": "Cam1",
-      "mac_address": "F4:00:D6:00:00",
-      "ip": "192.168.99.12"
-    }]
-}
+ssid: 'MY_HASSI_WIFI'
+wpa_passphrase: 'SECURED_WPA_PASS'
+channel: '6'
+network: 192.168.99.0
+address: 192.168.99.1
+netmask: 255.255.255.0
+broadcast: 192.168.99.255
+fixed_ips:
+  - name: outlet1
+    mac_address: '00:00:00:00:00'
+    ip: 192.168.99.10
+  - name: cam1
+    mac_address: 'F4:00:D6:00:00'
+    ip: 192.168.99.14
+
 ```
