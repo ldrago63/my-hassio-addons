@@ -11,7 +11,7 @@ https://github.com/ldrago63/my-hassio-addons
 
 ## My addons
 
-### hassio-wifi-hotspot
+### [hassio-wifi-hotspot :](https://github.com/ldrago63/my-hassio-addons/tree/main/hassio-wifi-hotspot)
 
 Create an autonomous home automation system.
 
