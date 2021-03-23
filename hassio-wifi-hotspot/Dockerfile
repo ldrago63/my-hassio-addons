@@ -1,5 +1,7 @@
 ARG BUILD_FROM
-FROM $BUILD_FROM
+#FROM $BUILD_FROM
+#Remove when fixed : https://community.home-assistant.io/t/cant-install-local-add-on/276366/3 and use #FROM $BUILD_FROM
+FROM hassioaddons/base-armv7:8.0.6
 
 MAINTAINER Lucas DRAGO <lucas_drago@hotmail.fr>
 
