@@ -3,7 +3,7 @@
 
 ## Installation
 
-For installation read [the official instructions](https://www.home-assistant.io/hassio/installing_third_party_addons/) on the Home Assistant website my github url :
+For installation read [the official instructions](https://www.home-assistant.io/hassio/installing_third_party_addons/) on the Home Assistant website and use github url :
 
 ```txt
 https://github.com/ldrago63/my-hassio-addons
