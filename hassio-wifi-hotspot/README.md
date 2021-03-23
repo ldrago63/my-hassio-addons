@@ -10,8 +10,7 @@ Perfect for a first low cost installation in a small house, apartment or shed.
 
 ### Sample of network Architecture
 
-![Archi](./readme-resources/architecture.png)
-
+![Archi](https://raw.githubusercontent.com/ldrago63/my-hassio-addons/main/hassio-wifi-hotspot/readme-resources/architecture.png)
 
 ## Installation
 
