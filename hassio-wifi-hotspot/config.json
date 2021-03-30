@@ -1,6 +1,6 @@
 {
   "name": "Hassio wifi hotspot",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "slug": "hassio-wifi-hotspot",
   "description": "Connect directly your wifi sensors / cams / lights / outlets to hassio for a perfect devices isolation",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
@@ -29,6 +29,7 @@
     "backup:rw"
   ],
   "options": {
+    "interface": "wlan0",
     "ssid": "",
     "wpa_passphrase": "",
     "channel": "6",
@@ -43,6 +44,7 @@
     }]
   },
   "schema": {
+    "interface": "str",
     "ssid": "str",
     "wpa_passphrase": "str",
     "channel": "int",

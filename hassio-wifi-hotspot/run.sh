@@ -1,24 +1,8 @@
 #!/bin/bash
 
-# SIGTERM-handler this funciton will be executed when the container receives the SIGTERM signal (when stopping)
-term_handler(){
-	echo "Stopping..."
-	ifdown wlan0
-	ip link set wlan0 down
-	ip addr flush dev wlan0
-	exit 0
-}
-
-# Setup signal handlers
-trap 'term_handler' SIGTERM
-
-echo "Starting..."
-
-echo "Set nmcli managed no"
-nmcli dev set wlan0 managed no
-
 CONFIG_PATH=/data/options.json
 
+INTERFACE=$(jq --raw-output ".interface" $CONFIG_PATH)
 SSID=$(jq --raw-output ".ssid" $CONFIG_PATH)
 WPA_PASSPHRASE=$(jq --raw-output ".wpa_passphrase" $CONFIG_PATH)
 CHANNEL=$(jq --raw-output ".channel" $CONFIG_PATH)
@@ -34,15 +18,33 @@ for required_var in "${required_vars[@]}"; do
     if [[ -z ${!required_var} ]]; then
         error=1
         echo >&2 "Error: $required_var env variable not set."
+        exit 1
     fi
 done
 
-if [[ -n $error ]]; then
-    exit 1
-fi
+
+# SIGTERM-handler this funciton will be executed when the container receives the SIGTERM signal (when stopping)
+term_handler(){
+	echo "Stopping..."
+	eval "ifdown $INTERFACE"
+	eval "ip link set $INTERFACE down"
+	eval "ip addr flush dev $INTERFACE"
+	exit 0
+}
+
+# Setup signal handlers
+trap 'term_handler' SIGTERM
+
+echo "Starting..."
+
+echo "Set nmcli managed no"
+eval "nmcli dev set $INTERFACE managed no"
+
+
 
 # Setup hostapd.conf
 echo "Setup hostapd ..."
+echo "interface=$INTERFACE"$'\n' >> /hostapd.conf
 echo "ssid=$SSID"$'\n' >> /hostapd.conf
 echo "wpa_passphrase=$WPA_PASSPHRASE"$'\n' >> /hostapd.conf
 echo "channel=$CHANNEL"$'\n' >> /hostapd.conf
@@ -50,10 +52,10 @@ echo "channel=$CHANNEL"$'\n' >> /hostapd.conf
 # Setup interface
 echo "Setup interface ..."
 
-#ip link set wlan0 down
-#ip addr flush dev wlan0
-#ip addr add ${IP_ADDRESS}/24 dev wlan0
-#ip link set wlan0 up
+#ip link set $INTERFACE down
+#ip addr flush dev $INTERFACE
+#ip addr add ${IP_ADDRESS}/24 dev $INTERFACE
+#ip link set $INTERFACE up
 
 echo "address $ADDRESS"$'\n' >> /etc/network/interfaces
 echo "netmask $NETMASK"$'\n' >> /etc/network/interfaces
@@ -92,12 +94,12 @@ subnet $NETWORK netmask $NETMASK {
 }
 ENDFILE
 
-ifdown wlan0
-ifup wlan0
+eval "ifdown $INTERFACE"
+eval "ifup $INTERFACE"
 
 echo "Starting dhcpd daemon ..."
 touch /var/lib/dhcp/dhcpd.leases
-dhcpd -d -f -pf /var/run/dhcp-server/dhcpd.pid -cf /etc/dhcp/dhcpd.conf wlan0 &
+eval "dhcpd -d -f -pf /var/run/dhcp/dhcpd.pid -cf /etc/dhcp/dhcpd.conf $INTERFACE &"
 
 echo "Starting HostAP daemon ..."
 hostapd -d /hostapd.conf & wait ${!}
