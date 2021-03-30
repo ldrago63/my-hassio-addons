@@ -25,6 +25,7 @@ https://github.com/ldrago63/my-hassio-addons
 The available configuration options are as follows (this is filled in with some example data):
 
 ```
+interface: wlan0
 ssid: 'MY_HASSI_WIFI'
 wpa_passphrase: 'SECURED_WPA_PASS'
 channel: '6'
