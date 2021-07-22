@@ -13,7 +13,7 @@ BROADCAST=$(jq --raw-output ".broadcast" $CONFIG_PATH)
 FIXED_IPS=$(jq --raw-output ".fixed_ips" $CONFIG_PATH)
 
 # Enforces required env variables
-required_vars=(SSID WPA_PASSPHRASE CHANNEL ADDRESS NETMASK BROADCAST)
+required_vars=(SSID CHANNEL ADDRESS NETMASK BROADCAST)
 for required_var in "${required_vars[@]}"; do
     if [[ -z ${!required_var} ]]; then
         error=1
@@ -45,9 +45,17 @@ eval "nmcli dev set $INTERFACE managed no"
 # Setup hostapd.conf
 echo "Setup hostapd ..."
 echo "interface=$INTERFACE"$'\n' >> /hostapd.conf
-echo "ssid=$SSID"$'\n' >> /hostapd.conf
-echo "wpa_passphrase=$WPA_PASSPHRASE"$'\n' >> /hostapd.conf
 echo "channel=$CHANNEL"$'\n' >> /hostapd.conf
+echo "ssid=$SSID"$'\n' >> /hostapd.conf
+if [ "${WPA_PASSPHRASE}" == "" ] ; then
+	echo "WARNING: no passphrase configured so creating an open access point"
+else
+	echo "auth_algs=1"$'\n' >> /hostapd.conf
+	echo "wpa=2"$'\n' >> /hostapd.conf
+	echo "wpa_key_mgmt=WPA-PSK"$'\n' >> /hostapd.conf
+	echo "rsn_pairwise=CCMP"$'\n' >> /hostapd.conf
+	echo "wpa_passphrase=$WPA_PASSPHRASE"$'\n' >> /hostapd.conf
+fi
 
 # Setup interface
 echo "Setup interface ..."
