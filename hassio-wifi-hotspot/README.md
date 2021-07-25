@@ -42,3 +42,6 @@ fixed_ips:
     ip: 192.168.99.14
 
 ```
+
+If you use ```wpa_passphrase: ''``` then the created network will be open - i.e. devices will be able to connect without supplying a passphrase.
+
